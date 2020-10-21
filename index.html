@@ -8,13 +8,13 @@
 </head>
 <body>
     <div class="main-container"></div>
-    <div id="aviable-ships">
+    <div id="aviable-ships-menu">
         <h2>Arrage your ships</h2>
-    <div class="aviable-ships__container">
+    <div class="aviable-ships-container">
         <ul class="aviable-ships__list">
             <li id="fourdeck">[Fourdeck]</li>
             <li id="threedeck">[Threedeck]</li>
-            <li id="threedeck">[Threedeck]</li>
+            <li id="threedeck2">[Threedeck]</li>
             <li id="twodeck">[Twodeck]</li>
             <li id="twodeck2">[Twodeck]</li>
             <li id="twodeck3">[Twodeck]</li>
@@ -24,9 +24,14 @@
             <li id="onedeck4">[onedeck]</li>     
         </ul>
     </div>
-    <button></button>
-    <button></button>
-    <button></button>
+    <button id="handle-ship-placement">
+        Handle placement of ships
+    </button>
+    <button id="rotate-button" data-direction="0" class="hidden">
+        Rotate your ships
+    </button>
+    <button id="random-ship-placement">Random placement of ships</button>
+    <button id="start-game" class="hidden">Start the game</button>
     <div class="grid-container">
        <h2>Your squadron</h2>
        <div class="player-scoore">Подсчет очков</div>  
