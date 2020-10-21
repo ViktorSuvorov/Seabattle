@@ -67,6 +67,149 @@ class Field {
     );
   }
 }
+///////// Описание класса набора кораблей
+class Squadron {
+  constructor(playerGrid, player) {
+    this.numShips = Seabattle.generalData.availableShips.length;
+    this.playerGrid = playerGrid;
+    this.player = player;
+    this.squadronList = [];
+    this.populate();
+  }
+
+  populate() {
+    for (let i = 0; i < this.numShips; i++) {
+      this.squadronList.push(
+        new Ship(
+          Seabattle.generalData.availableShips[i],
+          this.playerGrid,
+          this.player
+        )
+      );
+    }
+  }
+
+  placeShip(x, y, direction, shipType) {
+    let shipCoords = null;
+
+    for (let ship of this.squadronList) {
+      if (shipType === ship.type && ship.canBeInstalled(x, y, direction)) {
+        ship.create(x, y, direction, false);
+        shipCoords = ship.getAllShipCells();
+
+        for (let shipCoord of shipCoords) {
+          this.playerGrid.updateCell(
+            shipCoord.x,
+            shipCoord.y,
+            'ship',
+            this.player
+          );
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  placeComputerShipsRandomly() {
+    let x = null;
+    let y = null;
+    let direction = null;
+    let illegalPlacement = null;
+
+    for (let ship of this.squadronList) {
+      illegalPlacement = true;
+
+      while (illegalPlacement) {
+        x = getRandom(0, 9);
+        y = getRandom(0, 9);
+        direction = getRandom(0, 1);
+
+        if (ship.canBeInstalled(x, y, direction)) {
+          ship.create(x, y, direction, false);
+          illegalPlacement = false;
+        } else {
+          continue;
+        }
+      }
+    }
+  }
+
+  placePlayerShipsRandomly() {
+      
+      let x = null;
+      let y = null;
+      let direction = null;
+      let illegalPlacement = null;
+      let shipCoords = null;
+
+      for (let ship of this.squadronList) {
+        illegalPlacement = true;
+  
+        while (illegalPlacement) {
+          x = getRandom(0, 9);
+          y = getRandom(0, 9);
+          direction = getRandom(0, 1);
+  
+          if (ship.canBeInstalled(x, y, direction)) {
+            ship.create(x, y, direction, false);
+            shipCoords = ship.getAllShipCells();
+            for (let shipCoord of shipCoords) {
+              this.playerGrid.updateCell(
+                shipCoord.x,
+                shipCoord.y,
+                'ship',
+                this.player
+              );
+            }
+            illegalPlacement = false;
+          } else {
+            continue;
+          }
+        }
+      }
+    }
+
+  findShipByCoords(x, y) {
+    for (let ship of this.squadronList) {
+      if (ship.direction === Ship.verticalDirection) {
+        if (
+          y === ship.yPosition &&
+          x >= ship.xPosition &&
+          x < ship.xPosition + ship.shipLength
+        ) {
+          return ship;
+        } else {
+          continue;
+        }
+      } else {
+        if (
+          x === ship.xPosition &&
+          y >= ship.yPosition &&
+          y < ship.yPosition + ship.shipLength
+        ) {
+          return ship;
+        } else {
+          continue;
+        }
+      }
+    }
+    return null;
+  }
+
+  areAllShipsSunk() {
+    for (let ship of this.squadronList) {
+      if (ship.sunk === false) {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
+
+
+
 /////// Описания класса Seabattle  - общие вещи необходимые для приложения
 class Seabattle {
   constructor() {
