@@ -7,24 +7,66 @@ class Field {
     this.init();
   }
 
-  // init() {
-  //     for(let i = o; i < this.size;i+=) {
-  //         let row = [];
-  //         this.cells[i] = row;
+  init() {
+    for (let i = 0; i < this.size; i++) {
+      let row = [];
+      this.cells[i] = row;
 
-  //         for (let j = 0;j < this.size;j++) {
-  //             // Заполнение пустыми ячейками.
-  //         }
-  //     }
-  // }
+      for (let j = 0; j < this.size; j++) {
+        row.push(Seabattle.generalData.cellType.empty);
+      }
+    }
+  }
 
   updateCell(x, y, type, targetPlayer) {
     let player = "";
-    if (some) {
+    if (targetPlayer === Seabattle.generalData.player) {
+      player = "player";
+    } else if (targetPlayer === Seabattle.generalData.computer) {
+      player = "player";
     }
+
+    switch (type) {
+      case "empty":
+        this.cells[x][y] = Seabattle.generalData.cellType.empty;
+        break;
+      case "ship":
+        this.cells[x][y] = Seabattle.generalData.cellType.ship;
+        break;
+      case "miss":
+        this.cells[x][y] = Seabattle.generalData.cellType.miss;
+        break;
+      case "hit":
+        this.cells[x][y] = Seabattle.generalData.cellType.hit;
+        break;
+      case "sunk":
+        this.cells[x][y] = Seabattle.generalData.cellType.sunk;
+        break;
+      default:
+        this.cells[x][y] = Seabattle.generalData.cellType.empty;
+        break;
+    }
+
+    document
+      .querySelector(`.${player} [data-x="${x}"][data-y="${y}"]`)
+      .classList.add("grid-cell", `grid-${type}`);
+  }
+
+  isMiss(x, y) {
+    return this.cells[x][y] === Seabattle.generalData.cellType.miss;
+  }
+
+  isUndamagedShip(x, y) {
+    return this.cells[x][y] === Seabattle.generalData.cellType.ship;
+  }
+
+  isDamagedShip(x, y) {
+    return (
+      this.cells[x][y] === Seabattle.generalData.cellType.hit ||
+      this.cells[x][y] === Seabattle.generalData.cellType.sunk
+    );
   }
 }
-
 /////// Описания класса Seabattle  - общие вещи необходимые для приложения
 class Seabattle {
   constructor() {
@@ -262,36 +304,10 @@ class Seabattle {
   }
 }
 
-Seabattle.gameOver = false;
-Seabattle.placeShipDirection = null;
-Seabattle.placeShipType = "";
-Seabattle.placeShipCoords = [];
-Seabattle.generalData = {
-  aviableShips: [
-    "fourdeck",
-    "threedeck",
-    "threedeck2",
-    "twodeck",
-    "twodeck2",
-    "twodeck3",
-    "onedeck",
-    "onedeck2",
-    "onedeck3",
-    "onedeck4",
-  ],
-  player: 0,
-  computer: 1,
-  cellType: {
-    empty: 0,
-    ship: 1,
-    miss: 2,
-    hit: 3,
-    sunk: 4,
-  },
-};
 
+//  Описание класса корабля /////////////////////////////////
 class Ship {
-  constructor(type, PlayerGrid, player) {
+  constructor(type, playerGrid, player) {
     this.damage = 0;
     this.type = type;
     this.playerGrid = this.playerGrid;
@@ -331,15 +347,197 @@ class Ship {
     this.sunk = false;
   }
 
-  canBeInstalled(x,y,direction) {
-      if (this.withinbounds(x,y,direction)) {
-          for (let i = 0; i < this.shipLength;i++) {
-              if (direction === Ship.verticalDirection) {
-                  if (
-                      this.playerGrid.cells[x+i][y] === Seabattle.generalData.cellType.miss || this.playerGrid.cell[x+i][y] === Seabattle.generalData.cellType.ship || (y +) 
-                  )
-              }
+  canBeInstalled(x, y, direction) {
+    if (this.withinBounds(x, y, direction)) {
+      for (let i = 0; i < this.shipLength; i++) {
+        if (direction === Ship.verticalDirection) {
+          if (
+            this.playerGrid.cells[x + i][y] ===
+              Seabattle.generalData.cellType.miss ||
+            this.playerGrid.cells[x + i][y] ===
+              Seabattle.generalData.cellType.ship ||
+            (y + i + 1 < 10 &&
+              this.playerGrid.cells[x][y + 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i - 1 >= 0 &&
+              this.playerGrid.cells[x][y - 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x + i + 1 < 10 &&
+              this.playerGrid.cells[x + i + 1][y] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x + i + 1 < 10 &&
+              y + 1 < 10 &&
+              this.playerGrid.cells[x + i + 1][y + 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x + i + 1 < 10 &&
+              y - 1 >= 0 &&
+              this.playerGrid.cells[x + i + 1][y - 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x + i - 1 >= 0 &&
+              this.playerGrid.cells[x + i - 1][y] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x + i - 1 >= 0 &&
+              y + 1 < 10 &&
+              this.playerGrid.cells[x + i - 1][y + 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x + i - 1 >= 0 &&
+              y - 1 >= 0 &&
+              this.playerGrid.cells[x + i - 1][y - 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            this.playerGrid.cells[x + i][y] ===
+              Seabattle.generalData.cellType.sunk
+          ) {
+            return false;
           }
+        } else {
+          if (
+            this.playerGrid.cells[x][y + i] ===
+              Seabattle.generalData.cellType.miss ||
+            this.playerGrid.cells[x][y + i] ===
+              Seabattle.generalData.cellType.ship ||
+            (x + 1 < 10 &&
+              this.playerGrid.cells[x + 1][y] ===
+                Seabattle.generalData.cellType.ship) ||
+            (x - 1 >= 0 &&
+              this.playerGrid.cells[x - 1][y] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i + 1 < 10 &&
+              this.playerGrid.cells[x][y + i + 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i + 1 < 10 &&
+              x + 1 < 10 &&
+              this.playerGrid.cells[x + 1][y + i + 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i + 1 < 10 &&
+              x - 1 >= 0 &&
+              this.playerGrid.cells[x - 1][y + i + 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i - 1 >= 0 &&
+              this.playerGrid.cells[x][y + i - 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i - 1 >= 0 &&
+              x + 1 < 10 &&
+              this.playerGrid.cells[x + 1][y + i - 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            (y + i - 1 >= 0 &&
+              x - 1 >= 0 &&
+              this.playerGrid.cells[x - 1][y + i - 1] ===
+                Seabattle.generalData.cellType.ship) ||
+            this.playerGrid.cells[x][y + i] ===
+              Seabattle.generalData.cellType.sunk
+          ) {
+            return false;
+          }
+        }
       }
+      return true;
+    } else {
+      return false;
+    }
+  }
+  withinBounds(x, y, direction) {
+    if (direction === Ship.verticalDirection) {
+      return x + this.shipLength <= 10;
+    } else {
+      return y + this.shipLength <= 10;
+    }
+  }
+
+  getAllShipCells() {
+    let result = [];
+    for (let i = 0; i < this.shipLength; i++) {
+      if (this.direction === Ship.verticalDirection) {
+        result[i] = { x: this.xPosition + i, y: this.yPosition };
+      } else {
+        result[i] = { x: this.xPosition, y: this.yPosition + i };
+      }
+    }
+
+    return result;
+  }
+  create(x, y, direction, temporary) {
+    this.xPosition = x;
+    this.yPosition = y;
+    this.direction = direction;
+
+    if (!temporary) {
+      for (let i = 0; i < this.shipLength; i++) {
+        if (this.direction === Ship.verticalDirection) {
+          this.playerGrid.cells[x + i][y] = Seabattle.generalData.cellType.ship;
+        } else {
+          this.playerGrid.cells[x][y + i] = Seabattle.generalData.cellType.ship;
+        }
+      }
+    }
+  }
+  isSunk() {
+    return this.damage >= this.maxDamage;
+  }
+
+  sinkShip() {
+    this.damage = this.maxDamage;
+    this.sunk = true;
+
+    let allCells = this.getAllShipCells();
+
+    for (let i = 0; i < this.shipLength; i++) {
+      this.playerGrid.updateCell(
+        allCells[i].x,
+        allCells[i].y,
+        "sunk",
+        this.player
+      );
+    }
+  }
+
+  incrementDamage() {
+    this.damage++;
+
+    if (this.isSunk()) {
+      this.sinkShip();
+      return Seabattle.generalData.cellType.sunk;
+    }
+
+    return Seabattle.generalData.cellType.hit;
   }
 }
+///////// Общие 
+Seabattle.gameOver = false;
+Seabattle.placeShipDirection = null;
+Seabattle.placeShipType = "";
+Seabattle.placeShipCoords = [];
+Seabattle.generalData = {
+  aviableShips: [
+    "fourdeck",
+    "threedeck",
+    "threedeck2",
+    "twodeck",
+    "twodeck2",
+    "twodeck3",
+    "onedeck",
+    "onedeck2",
+    "onedeck3",
+    "onedeck4",
+  ],
+  player: 0,
+  computer: 1,
+  cellType: {
+    empty: 0,
+    ship: 1,
+    miss: 2,
+    hit: 3,
+    sunk: 4,
+  },
+};
+Ship.verticalDirection = 0;
+Ship.horizontalDirection = 1;
+
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomFromArray(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+const game = new Game();
