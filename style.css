@@ -90,7 +90,7 @@ button:focus {
   .grid-miss:hover,
   .player .grid-miss:hover {
     background-color: #ffffff;
-    background-image: url('img/dot_PNG29.png');
+    background-image: url('img/dot.png');
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -100,7 +100,7 @@ button:focus {
   .grid-hit:hover,
   .player .grid-hit:hover {
     background-color: #f60018;
-    background-image: url('img/cross-icon.png');
+    background-image: url('img/cross.png');
     background-position: center;
     background-repeat: no-repeat;
   }
