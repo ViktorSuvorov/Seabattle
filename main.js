@@ -111,11 +111,12 @@ class Squadron {
     return false;
   }
 
-  placeComputerShipsRandomly() {
+  placeComputerShipsRandomly(shipVisibility = false) {
     let x = null;
     let y = null;
     let direction = null;
     let illegalPlacement = null;
+    let shipCoords = null;
 
     for (let ship of this.squadronList) {
       illegalPlacement = true;
@@ -128,8 +129,20 @@ class Squadron {
         if (ship.canBeInstalled(x, y, direction)) {
           ship.create(x, y, direction, false);
           illegalPlacement = false;
-        } else {
-          continue;
+
+          if (shipVisibility) {
+            shipCoords = ship.getAllShipCells();
+            for (let shipCoord of shipCoords) {
+              this.playerGrid.updateCell(
+                shipCoord.x,
+                shipCoord.y,
+                "ship",
+                this.player
+              );
+            }
+          } else {
+            continue;
+          }
         }
       }
     }
@@ -416,7 +429,7 @@ class Seabattle {
         this.placingOnGrid = false;
         if (this.areAllShipPlaced()) {
           document.getElementById("rotate-button").classList.add("hidden");
-          document.getElementById("start-game").classList ="visible";
+          document.getElementById("start-game").classList = "visible";
         }
       }
     }
@@ -435,7 +448,7 @@ class Seabattle {
   }
 
   toggleRotationHandler(event) {
-    const direction = parseInt(event.target.getAttribute("data-directiom"), 10);
+    const direction = parseInt(event.target.getAttribute("data-direction"), 10);
 
     if (direction === Ship.verticalDirection) {
       event.target.setAttribute("data-direction", "1");
