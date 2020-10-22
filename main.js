@@ -463,6 +463,8 @@ class Seabattle {
     document.getElementById("aviable-ships-menu").classList.add("hidden");
   }
 
+  async delay() {}
+
   shoot(x, y, targetPlayer) {
     let targetGrid = null;
     let targetSquadron = null;
@@ -505,26 +507,27 @@ class Seabattle {
       result = this.shoot(x, y, Seabattle.generalData.computer);
     }
     if (!Seabattle.gameOver && result === Seabattle.generalData.cellType.miss) {
-      this.enemy.shoot();
+      setTimeout(() => this.enemy.shoot(), 1000);
     }
   }
   checkForGameOver() {
     if (this.computerSquadron.areAllShipsSunk()) {
       alert("You won");
       Seabattle.gameOver = true;
+      this.playAgain();
     } else if (this.playerSquadron.areAllShipsSunk()) {
       alert("You lose");
       Seabattle.gameOver = true;
+      this.playAgain();
     }
   }
-
   setRandomPlayerShips() {
     this.playerSquadron.placeComputerShipsRandomly(true);
     document.getElementById("rotate-button").classList.add("hidden");
     document.getElementById("aviable-ships-list").classList.add("hidden");
     document.getElementById("random-ship-placement").classList.add("hidden");
-    document.getElementById("handle-ship-placement").classList.add("hidden");
-    document.getElementById("start-game").classList = 'visible';
+    document.getElementById("placement-notation").classList.add("hidden");
+    document.getElementById("start-game").classList = "visible";
     document.getElementById("menu-header").textContent = "Let`s start?";
   }
 
@@ -567,6 +570,7 @@ class Seabattle {
         false
       );
     }
+
     document
       .getElementById("rotate-button")
       .addEventListener("click", this.toggleRotationHandler, false);
@@ -577,7 +581,7 @@ class Seabattle {
 
     document
       .getElementById("random-ship-placement")
-      .addEventListener("click", this.setRandomPlayerShips.bind(this), false);
+      .addEventListener("click", this.setRandomPlayerShips.bind(this), false); 
   }
 }
 
@@ -756,12 +760,23 @@ class Ship {
     this.damage = this.maxDamage;
     this.sunk = true;
 
-    let allCells = this.getAllShipCells();
+    let shipCells = this.getAllShipCells();
+    let shipAroundCells = [];
+
+    shipCells.forEach((cell) => {
+      shipAroundCells.push(...game.enemy.getCellsAround(cell.x, cell.y));
+    });
+
+    for (let cell of shipAroundCells) {
+      this.playerGrid.updateCell(cell.xPos, cell.yPos, "miss", this.player);
+    }
+
+    game.enemy.getCellsAround();
 
     for (let i = 0; i < this.shipLength; i++) {
       this.playerGrid.updateCell(
-        allCells[i].x,
-        allCells[i].y,
+        shipCells[i].x,
+        shipCells[i].y,
         "sunk",
         this.player
       );
