@@ -518,6 +518,16 @@ class Seabattle {
     }
   }
 
+  setRandomPlayerShips() {
+    this.playerSquadron.placeComputerShipsRandomly(true);
+    document.getElementById("rotate-button").classList.add("hidden");
+    document.getElementById("aviable-ships-list").classList.add("hidden");
+    document.getElementById("random-ship-placement").classList.add("hidden");
+    document.getElementById("handle-ship-placement").classList.add("hidden");
+    document.getElementById("start-game").classList = 'visible';
+    document.getElementById("menu-header").textContent = "Let`s start?";
+  }
+
   init() {
     let squadronList = document
       .querySelector(".aviable-ships__list")
@@ -564,6 +574,10 @@ class Seabattle {
       .getElementById("start-game")
       .addEventListener("click", this.startGameHandler.bind(this), false);
     this.computerSquadron.placeComputerShipsRandomly();
+
+    document
+      .getElementById("random-ship-placement")
+      .addEventListener("click", this.setRandomPlayerShips.bind(this), false);
   }
 }
 
