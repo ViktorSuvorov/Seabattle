@@ -356,7 +356,7 @@ class Seabattle {
     );
     this.placingOnGrid = true;
   }
-  positioningMouseHandler(event) {
+  positioningMouseoverHandler(event) {
     if (this.placingOnGrid) {
       const x = parseInt(event.target.getAttribute("data-x", 10));
       const y = parseInt(event.target.getAttribute("data-y", 10));
@@ -535,6 +535,11 @@ class Seabattle {
       );
       playerCell.addEventListener(
         "mouseover",
+        this.positioningMouseoverHandler.bind(this),
+        false
+      );
+      playerCell.addEventListener(
+        "mouseout",
         this.positioningMouseoutHandler.bind(this),
         false
       );
