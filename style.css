@@ -34,7 +34,7 @@ button:focus {
   outline: none;
 }
 
-.container {
+.main-container {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -62,6 +62,15 @@ button:focus {
 .grid-container:last-child {
   margin-left: 10px;
 }
+
+.grid-cell {
+    vertical-align: top;
+    height: 40px;
+    width: 40px;
+    display: inline-block;
+    background-color: #ffffff;
+    margin: 1px;
+  }
 
 .grid-cell:hover {
     cursor: pointer;
