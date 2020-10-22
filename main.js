@@ -70,7 +70,7 @@ class Field {
 ///////// Описание класса набора кораблей
 class Squadron {
   constructor(playerGrid, player) {
-    this.numShips = Seabattle.generalData.availableShips.length;
+    this.numShips = Seabattle.generalData.aviableShips.length;
     this.playerGrid = playerGrid;
     this.player = player;
     this.squadronList = [];
@@ -81,7 +81,7 @@ class Squadron {
     for (let i = 0; i < this.numShips; i++) {
       this.squadronList.push(
         new Ship(
-          Seabattle.generalData.availableShips[i],
+          Seabattle.generalData.aviableShips[i],
           this.playerGrid,
           this.player
         )
@@ -373,8 +373,14 @@ class Seabattle {
     this.size = 10;
     this.playerField = new Field(this.size);
     this.computerField = new Field(this.size);
-    this.playerSquadron = new Squadron(this.playerField);
-    this.computerSquadron = new Squadron(this.computerField);
+    this.playerSquadron = new Squadron(
+      this.playerField,
+      Seabattle.generalData.player
+    );
+    this.computerSquadron = new Squadron(
+      this.computerField,
+      Seabattle.generalData.computer
+    );
     this.enemy = new Computer(this);
     this.readyToPlay = false;
     this.placingOnGrid = false;
@@ -404,7 +410,7 @@ class Seabattle {
     }
     Seabattle.placeShipType = event.target.getAttribute("id");
     document.getElementById(Seabattle.placeShipType).classList.add("placing");
-    Seabattle.placeShipDirection = parceInt(
+    Seabattle.placeShipDirection = parseInt(
       document.getElementById("rotate-button").getAttribute("data-direction"),
       10
     );
@@ -462,15 +468,15 @@ class Seabattle {
       );
       if (successful) {
         document
-          .getElementsById(Seabattle.placeShipType)
+          .getElementById(Seabattle.placeShipType)
           .classList.add("placed");
         Seabattle.placeShipDirection = null;
         Seabattle.placeShipType = "";
         Seabattle.placeShipCoords = [];
         this.placingOnGrid = false;
         if (this.areAllShipPlaced()) {
-          document.getElementsById("rotate-button").classList.add("hidden");
-          document.getElementsById("start-game").classList.add("visible");
+          document.getElementById("rotate-button").classList.add("hidden");
+          document.getElementById("start-game").classList.add("visible");
         }
       }
     }
@@ -489,7 +495,7 @@ class Seabattle {
   }
 
   toggleRotationHandler(event) {
-    const direction = parceInt(event.target.getAttribute("data-directiom"), 10);
+    const direction = parseInt(event.target.getAttribute("data-directiom"), 10);
 
     if (direction === Ship.verticalDirection) {
       event.target.setAttribute("data-direction", "1");
@@ -501,7 +507,7 @@ class Seabattle {
   }
   startGameHandler(event) {
     this.readyToPlay = true;
-    document.getElementsById("aviable-ships-menu").classList.add("hidden");
+    document.getElementById("aviable-ships-menu").classList.add("hidden");
   }
 
   shoot(x, y, targetPlayer) {
@@ -538,8 +544,8 @@ class Seabattle {
     }
   }
   shootHandler(event) {
-    const x = parceInt(event.target.getAttribute("data-x"), 10);
-    const y = pareceInt(event.target.getAttribute("data-y"), 10);
+    const x = parseInt(event.target.getAttribute("data-x"), 10);
+    const y = parseInt(event.target.getAttribute("data-y"), 10);
     let result = null;
 
     if (this.readyToPlay) {
@@ -561,11 +567,11 @@ class Seabattle {
 
   init() {
     let squadronList = document
-      .querySelector("aviable-ships__list")
+      .querySelector(".aviable-ships__list")
       .querySelectorAll("li");
 
-    let computerCells = document.querySelector(".computer");
-    let playerCells = document.querySelector(".player");
+    let computerCells = document.querySelector(".computer").childNodes;
+    let playerCells = document.querySelector(".player").childNodes;
 
     for (let ship of squadronList) {
       ship.addEventListener(
@@ -581,7 +587,7 @@ class Seabattle {
         false
       );
     }
-    for (let playerCell of PlayerCells) {
+    for (let playerCell of playerCells) {
       playerCell.addEventListener(
         "click",
         this.placingHandler.bind(this),
@@ -594,10 +600,9 @@ class Seabattle {
       );
     }
     document
-      .getElementsById("rotate-button")
+      .getElementById("rotate-button")
       .addEventListener("click", this.toggleRotationHandler, false);
     document
-      .getElementById("start-game")
       .getElementById("start-game")
       .addEventListener("click", this.startGameHandler.bind(this), false);
     this.computerSquadron.placeComputerShipsRandomly();
@@ -609,7 +614,7 @@ class Ship {
   constructor(type, playerGrid, player) {
     this.damage = 0;
     this.type = type;
-    this.playerGrid = this.playerGrid;
+    this.playerGrid = playerGrid;
     this.player = player;
 
     switch (this.type) {
@@ -839,4 +844,4 @@ function getRandomFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const game = new Game();
+const game = new Seabattle();
