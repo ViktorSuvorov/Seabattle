@@ -101,7 +101,7 @@ class Squadron {
           this.playerGrid.updateCell(
             shipCoord.x,
             shipCoord.y,
-            'ship',
+            "ship",
             this.player
           );
         }
@@ -136,39 +136,65 @@ class Squadron {
   }
 
   placePlayerShipsRandomly() {
-      
-      let x = null;
-      let y = null;
-      let direction = null;
-      let illegalPlacement = null;
-      let shipCoords = null;
+    let x = null;
+    let y = null;
+    let direction = null;
+    let illegalPlacement = null;
+    let shipCoords = null;
 
-      for (let ship of this.squadronList) {
-        illegalPlacement = true;
-  
-        while (illegalPlacement) {
-          x = getRandom(0, 9);
-          y = getRandom(0, 9);
-          direction = getRandom(0, 1);
-  
-          if (ship.canBeInstalled(x, y, direction)) {
-            ship.create(x, y, direction, false);
-            shipCoords = ship.getAllShipCells();
-            for (let shipCoord of shipCoords) {
-              this.playerGrid.updateCell(
-                shipCoord.x,
-                shipCoord.y,
-                'ship',
-                this.player
-              );
-            }
-            illegalPlacement = false;
-          } else {
-            continue;
+    for (let ship of this.squadronList) {
+      illegalPlacement = true;
+
+      while (illegalPlacement) {
+        x = getRandom(0, 9);
+        y = getRandom(0, 9);
+        direction = getRandom(0, 1);
+
+        if (ship.canBeInstalled(x, y, direction)) {
+          ship.create(x, y, direction, false);
+          shipCoords = ship.getAllShipCells();
+          for (let shipCoord of shipCoords) {
+            this.playerGrid.updateCell(
+              shipCoord.x,
+              shipCoord.y,
+              "ship",
+              this.player
+            );
           }
+          illegalPlacement = false;
+        } else {
+          continue;
         }
       }
     }
+  }
+  findShipByCoords(x, y) {
+    for (let ship of this.squadronList) {
+      if (ship.direction === Ship.verticalDirection) {
+        if (
+          y === ship.yPosition &&
+          x >= ship.xPosition &&
+          x < ship.xPosition + ship.shipLength
+        ) {
+          return ship;
+        } else {
+          continue;
+        }
+      } else {
+        if (
+          x === ship.xPosition &&
+          y >= ship.yPosition &&
+          y < ship.yPosition + ship.shipLength
+        ) {
+          return ship;
+        } else {
+          continue;
+        }
+      }
+    }
+    return null;
+  }
+
   findShipByCoords(x, y) {
     for (let ship of this.squadronList) {
       if (ship.direction === Ship.verticalDirection) {
@@ -225,24 +251,24 @@ class Computer {
     let cells = [];
 
     if (x - 1 >= 0) {
-      cells.push({xPos: x - 1, yPos: y});
+      cells.push({ xPos: x - 1, yPos: y });
       if (y - 1 >= 0) {
-        cells.push({xPos: x, yPos: y - 1});
-        cells.push({xPos: x - 1, yPos: y - 1});
+        cells.push({ xPos: x, yPos: y - 1 });
+        cells.push({ xPos: x - 1, yPos: y - 1 });
       }
       if (y + 1 < 10) {
-        cells.push({xPos: x, yPos: y + 1});
-        cells.push({xPos: x - 1, yPos: y + 1});
+        cells.push({ xPos: x, yPos: y + 1 });
+        cells.push({ xPos: x - 1, yPos: y + 1 });
       }
     }
 
     if (x + 1 < 10) {
-      cells.push({xPos: x + 1, yPos: y});
+      cells.push({ xPos: x + 1, yPos: y });
       if (y - 1 >= 0) {
-        cells.push({xPos: x + 1, yPos: y - 1});
+        cells.push({ xPos: x + 1, yPos: y - 1 });
       }
       if (y + 1 < 10) {
-        cells.push({xPos: x + 1, yPos: y + 1});
+        cells.push({ xPos: x + 1, yPos: y + 1 });
       }
     }
     return cells;
@@ -265,19 +291,19 @@ class Computer {
           Computer.damagedShipCoordsX.length > 1 &&
           Computer.damagedShipCoordsX[0] !== Computer.damagedShipCoordsX[1]
         ) {
-          randomDirection = 'xDirection';
+          randomDirection = "xDirection";
         } else if (
           Computer.damagedShipCoordsX.length > 1 &&
           Computer.damagedShipCoordsX[0] === Computer.damagedShipCoordsX[1]
         ) {
-          randomDirection = 'yDirection';
+          randomDirection = "yDirection";
         } else if (Computer.damagedShipCoordsX.length === 1) {
-          randomDirection = getRandomFromArray(['xDirection', 'yDirection']);
+          randomDirection = getRandomFromArray(["xDirection", "yDirection"]);
         }
 
         randomValue = getRandomFromArray([-1, 1]);
 
-        if (randomDirection === 'xDirection') {
+        if (randomDirection === "xDirection") {
           if (randomValue === 1) {
             let maxXpos = Math.max(...Computer.damagedShipCoordsX);
             if (maxXpos + 1 < 10) {
@@ -340,7 +366,6 @@ class Computer {
 Computer.damagedShipCoordsX = [];
 Computer.damagedShipCoordsY = [];
 Computer.sunkShipsAreaCoords = [];
-
 
 /////// Описания класса Seabattle  - общие вещи необходимые для приложения
 class Seabattle {
@@ -579,7 +604,6 @@ class Seabattle {
   }
 }
 
-
 //  Описание класса корабля /////////////////////////////////
 class Ship {
   constructor(type, playerGrid, player) {
@@ -776,7 +800,7 @@ class Ship {
     return Seabattle.generalData.cellType.hit;
   }
 }
-///////// Общие 
+///////// Общие
 Seabattle.gameOver = false;
 Seabattle.placeShipDirection = null;
 Seabattle.placeShipType = "";
