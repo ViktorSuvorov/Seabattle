@@ -183,7 +183,24 @@ class Squadron {
     }
     return true;
   }
+
+
+  shipSunkCount() {
+    let countOfSunkShips = [];
+    for (let ship of this.squadronList) {
+  if(ship.sunk === true) {
+    countOfSunkShips.push('1');
+  }
+  }
+    return countOfSunkShips.length;
+  }
+  
+
+
+
+
 }
+
 
 class Computer {
   constructor(game) {
@@ -378,7 +395,8 @@ class Seabattle {
         if (
           Seabattle.placeShipType === ship.type &&
           ship.canBeInstalled(x, y, Seabattle.placeShipDirection)
-        ) {
+        )
+         {
           ship.create(x, y, Seabattle.placeShipDirection, true);
           Seabattle.placeShipCoords = ship.getAllShipCells();
 
@@ -463,8 +481,6 @@ class Seabattle {
     document.getElementById("aviable-ships-menu").classList.add("hidden");
   }
 
-  async delay() {}
-
   shoot(x, y, targetPlayer) {
     let targetGrid = null;
     let targetSquadron = null;
@@ -514,11 +530,9 @@ class Seabattle {
     if (this.computerSquadron.areAllShipsSunk()) {
       alert("You won");
       Seabattle.gameOver = true;
-      this.playAgain();
     } else if (this.playerSquadron.areAllShipsSunk()) {
       alert("You lose");
       Seabattle.gameOver = true;
-      this.playAgain();
     }
   }
   setRandomPlayerShips() {
