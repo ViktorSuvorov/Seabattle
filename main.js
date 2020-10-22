@@ -23,7 +23,7 @@ class Field {
     if (targetPlayer === Seabattle.generalData.player) {
       player = "player";
     } else if (targetPlayer === Seabattle.generalData.computer) {
-      player = "player";
+      player = "computer";
     }
 
     switch (type) {
@@ -133,66 +133,6 @@ class Squadron {
         }
       }
     }
-  }
-
-  placePlayerShipsRandomly() {
-    let x = null;
-    let y = null;
-    let direction = null;
-    let illegalPlacement = null;
-    let shipCoords = null;
-
-    for (let ship of this.squadronList) {
-      illegalPlacement = true;
-
-      while (illegalPlacement) {
-        x = getRandom(0, 9);
-        y = getRandom(0, 9);
-        direction = getRandom(0, 1);
-
-        if (ship.canBeInstalled(x, y, direction)) {
-          ship.create(x, y, direction, false);
-          shipCoords = ship.getAllShipCells();
-          for (let shipCoord of shipCoords) {
-            this.playerGrid.updateCell(
-              shipCoord.x,
-              shipCoord.y,
-              "ship",
-              this.player
-            );
-          }
-          illegalPlacement = false;
-        } else {
-          continue;
-        }
-      }
-    }
-  }
-  findShipByCoords(x, y) {
-    for (let ship of this.squadronList) {
-      if (ship.direction === Ship.verticalDirection) {
-        if (
-          y === ship.yPosition &&
-          x >= ship.xPosition &&
-          x < ship.xPosition + ship.shipLength
-        ) {
-          return ship;
-        } else {
-          continue;
-        }
-      } else {
-        if (
-          x === ship.xPosition &&
-          y >= ship.yPosition &&
-          y < ship.yPosition + ship.shipLength
-        ) {
-          return ship;
-        } else {
-          continue;
-        }
-      }
-    }
-    return null;
   }
 
   findShipByCoords(x, y) {
@@ -476,7 +416,7 @@ class Seabattle {
         this.placingOnGrid = false;
         if (this.areAllShipPlaced()) {
           document.getElementById("rotate-button").classList.add("hidden");
-          document.getElementById("start-game").classList.add("visible");
+          document.getElementById("start-game").classList ="visible";
         }
       }
     }
@@ -500,7 +440,7 @@ class Seabattle {
     if (direction === Ship.verticalDirection) {
       event.target.setAttribute("data-direction", "1");
       Seabattle.placeShipDirection = Ship.horizontalDirection;
-    } else if (direction === ship.horizontalDirection) {
+    } else if (direction === Ship.horizontalDirection) {
       event.target.setAttribute("data-direction", "0");
       Seabattle.placeShipDirection = Ship.verticalDirection;
     }
@@ -539,7 +479,7 @@ class Seabattle {
       return result;
     } else {
       targetGrid.updateCell(x, y, "miss", targetPlayer);
-      result = Seabattle.generalData.sellType.miss;
+      result = Seabattle.generalData.cellType.miss;
       return result;
     }
   }
@@ -626,6 +566,7 @@ class Ship {
         break;
       case Seabattle.generalData.aviableShips[2]:
         this.shipLength = 3;
+        break;
       case Seabattle.generalData.aviableShips[3]:
         this.shipLength = 2;
         break;
@@ -634,6 +575,7 @@ class Ship {
         break;
       case Seabattle.generalData.aviableShips[5]:
         this.shipLength = 2;
+        break;
       case Seabattle.generalData.aviableShips[6]:
         this.shipLength = 1;
         break;
