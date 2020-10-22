@@ -183,7 +183,24 @@ class Squadron {
     }
     return true;
   }
+
+
+  shipSunkCount() {
+    let countOfSunkShips = [];
+    for (let ship of this.squadronList) {
+  if(ship.sunk === true) {
+    countOfSunkShips.push('1');
+  }
+  }
+    return countOfSunkShips.length;
+  }
+  
+
+
+
+
 }
+
 
 class Computer {
   constructor(game) {
@@ -378,7 +395,8 @@ class Seabattle {
         if (
           Seabattle.placeShipType === ship.type &&
           ship.canBeInstalled(x, y, Seabattle.placeShipDirection)
-        ) {
+        )
+         {
           ship.create(x, y, Seabattle.placeShipDirection, true);
           Seabattle.placeShipCoords = ship.getAllShipCells();
 
@@ -505,7 +523,7 @@ class Seabattle {
       result = this.shoot(x, y, Seabattle.generalData.computer);
     }
     if (!Seabattle.gameOver && result === Seabattle.generalData.cellType.miss) {
-      this.enemy.shoot();
+      setTimeout(() => this.enemy.shoot(), 1000);
     }
   }
   checkForGameOver() {
@@ -516,6 +534,15 @@ class Seabattle {
       alert("You lose");
       Seabattle.gameOver = true;
     }
+  }
+  setRandomPlayerShips() {
+    this.playerSquadron.placeComputerShipsRandomly(true);
+    document.getElementById("rotate-button").classList.add("hidden");
+    document.getElementById("aviable-ships-list").classList.add("hidden");
+    document.getElementById("random-ship-placement").classList.add("hidden");
+    document.getElementById("placement-notation").classList.add("hidden");
+    document.getElementById("start-game").classList = "visible";
+    document.getElementById("menu-header").textContent = "Let`s start?";
   }
 
   init() {
@@ -557,6 +584,7 @@ class Seabattle {
         false
       );
     }
+
     document
       .getElementById("rotate-button")
       .addEventListener("click", this.toggleRotationHandler, false);
@@ -564,6 +592,10 @@ class Seabattle {
       .getElementById("start-game")
       .addEventListener("click", this.startGameHandler.bind(this), false);
     this.computerSquadron.placeComputerShipsRandomly();
+
+    document
+      .getElementById("random-ship-placement")
+      .addEventListener("click", this.setRandomPlayerShips.bind(this), false); 
   }
 }
 
@@ -742,12 +774,23 @@ class Ship {
     this.damage = this.maxDamage;
     this.sunk = true;
 
-    let allCells = this.getAllShipCells();
+    let shipCells = this.getAllShipCells();
+    let shipAroundCells = [];
+
+    shipCells.forEach((cell) => {
+      shipAroundCells.push(...game.enemy.getCellsAround(cell.x, cell.y));
+    });
+
+    for (let cell of shipAroundCells) {
+      this.playerGrid.updateCell(cell.xPos, cell.yPos, "miss", this.player);
+    }
+
+    game.enemy.getCellsAround();
 
     for (let i = 0; i < this.shipLength; i++) {
       this.playerGrid.updateCell(
-        allCells[i].x,
-        allCells[i].y,
+        shipCells[i].x,
+        shipCells[i].y,
         "sunk",
         this.player
       );

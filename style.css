@@ -161,5 +161,6 @@ button:focus {
   }
   
   .aviable-ships__list .placed {
-    visibility: hidden;
+    /* visibility: hidden; */
+    cursor: not-allowed;
   }

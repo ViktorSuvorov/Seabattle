@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-container">
+    <div id="main" class="main-container">
     <div id="aviable-ships-menu">
         <h2 id="menu-header">Arrage your ships</h2>
-    <div class="aviable-ships-container">
+    <div id="aviable-ships-list" class="aviable-ships-container">
         <ul class="aviable-ships__list">
             <li id="fourdeck">[Fourdeck]</li>
             <li id="threedeck">[Threedeck]</li>
@@ -24,12 +24,10 @@
             <li id="onedeck4">[onedeck]</li>     
         </ul>
     </div>
-    <button id="handle-ship-placement">
-        Handle placement of ships
-    </button>
     <button id="rotate-button" data-direction="0">
         Rotate your ships
     </button>
+    <h3 id="placement-notation">Or u can set ships Randomly</h3>
     <button id="random-ship-placement">Random placement of ships</button>
     <button id="start-game" class="hidden">Start the game</button>
     </div>
