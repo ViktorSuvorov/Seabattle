@@ -162,7 +162,7 @@ button:focus {
 }
 
 .aviable-ships__list .placed {
-  visibility: hidden;
+  display: none;
 }
 
 /* Стили для кораблей */

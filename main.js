@@ -466,7 +466,7 @@ class Seabattle {
   startGameHandler(event) {
     this.readyToPlay = true;
     document.getElementById("aviable-ships-menu").classList.add("hidden");
-    document.getElementById("game-info").textContent = 'The Game Started'
+    document.getElementById("game-info").textContent = 'The Game Started:'
   }
 
   shoot(x, y, targetPlayer) {
@@ -516,10 +516,10 @@ class Seabattle {
   }
   checkForGameOver() {
     if (this.computerSquadron.areAllShipsSunk()) {
-      alert("You won");
+      document.getElementById('game-info').textContent = 'You win';
       Seabattle.gameOver = true;
     } else if (this.playerSquadron.areAllShipsSunk()) {
-      alert("You lose");
+      document.getElementById('game-info').textContent = 'You loose';
       Seabattle.gameOver = true;
     }
   }
