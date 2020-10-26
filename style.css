@@ -162,7 +162,7 @@ button:focus {
 }
 
 .aviable-ships__list .placed {
-  visibility: hidden;
+  display: none;
 }
 
 /* Стили для кораблей */
@@ -186,4 +186,16 @@ button:focus {
 .placing--vertical {
  display: flex;
  flex-direction: column;
+}
+
+#game-info { 
+  width: 150px;
+  color: white;
+  background-color:dimgray;
+  padding: 10px;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 2%;
+  margin-top: 100px;
 }
