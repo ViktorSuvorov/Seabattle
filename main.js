@@ -183,25 +183,7 @@ class Squadron {
     }
     return true;
   }
-
-
-  shipSunkCount() {
-    let countOfSunkShips = [];
-    for (let ship of this.squadronList) {
-  if(ship.sunk === true) {
-    countOfSunkShips.push('1');
-  }
-  }
-    return countOfSunkShips.length;
-  }
-  
-
-
-
-
 }
-
-
 class Computer {
   constructor(game) {
     this.game = game;
@@ -467,13 +449,19 @@ class Seabattle {
 
   toggleRotationHandler(event) {
     const direction = parseInt(event.target.getAttribute("data-direction"), 10);
+    const el = document.querySelector('.placing');
 
     if (direction === Ship.verticalDirection) {
       event.target.setAttribute("data-direction", "1");
+      el.classList.toggle('placing--horizontal')
+      el.classList.remove('placing--vertical')
       Seabattle.placeShipDirection = Ship.horizontalDirection;
     } else if (direction === Ship.horizontalDirection) {
       event.target.setAttribute("data-direction", "0");
+      el.classList.toggle('placing--vertical')
+      el.classList.remove('placing--horizontal')
       Seabattle.placeShipDirection = Ship.verticalDirection;
+
     }
   }
   startGameHandler(event) {
