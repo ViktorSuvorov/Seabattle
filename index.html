@@ -1,45 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sea battle</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div id="main" class="main-container">
-    <div id="aviable-ships-menu">
+      <div id="aviable-ships-menu">
         <h2 id="menu-header">Arrage your ships</h2>
-    <div id="aviable-ships-list" class="aviable-ships-container">
-        <ul class="aviable-ships__list">
-            <li id="fourdeck">[Fourdeck]</li>
-            <li id="threedeck">[Threedeck]</li>
-            <li id="threedeck2">[Threedeck]</li>
-            <li id="twodeck">[Twodeck]</li>
-            <li id="twodeck2">[Twodeck]</li>
-            <li id="twodeck3">[Twodeck]</li>
-            <li id="onedeck">[onedeck]</li>
-            <li id="onedeck2">[onedeck]</li>
-            <li id="onedeck3">[onedeck]</li>
-            <li id="onedeck4">[onedeck]</li>     
-        </ul>
-    </div>
-    <button id="rotate-button" data-direction="0">
-        Rotate your ships
-    </button>
-    <h3 id="placement-notation">Or u can set ships Randomly</h3>
-    <button id="random-ship-placement">Random placement of ships</button>
-    <button id="start-game" class="hidden">Start the game</button>
-    </div>
-    <div class="grid-container">
-       <h2>Your squadron</h2> 
-       <div class="grid player"></div>  
-    </div>
-    <div class="grid-container">
+        <div id="aviable-ships-list" class="aviable-ships-container">
+          <ul class="aviable-ships__list">
+            <li id="fourdeck">
+              Fourdeck
+              <div class="four-div"></div>
+              <div class="four-div"></div>
+              <div class="four-div"></div>
+              <div class="four-div"></div>
+            </li>
+            <li id="threedeck">
+              Threedeck
+              <div class="three-div"></div>
+              <div class="three-div"></div>
+              <div class="three-div"></div>
+            </li>
+            <li id="threedeck2">
+              Threedeck
+              <div class="three-div"></div>
+              <div class="three-div"></div>
+              <div class="three-div"></div>
+            </li>
+            <li id="twodeck" class="two-deck">
+              Twodeck
+              <div class="two-div"></div>
+              <div class="two-div"></div>
+            </li>
+            <li id="twodeck2" class="two-deck">
+              Twodeck
+              <div class="two-div"></div>
+              <div class="two-div"></div>
+            </li>
+            <li id="twodeck3" class="two-deck">
+              Twodeck
+              <div class="two-div"></div>
+              <div class="two-div"></div>
+            </li>
+            <li id="onedeck" class="one-deck">
+              Onedeck
+              <div class="one-div"></div>
+            </li>
+            <li id="onedeck2" class="one-deck">
+              Onedeck
+              <div class="one-div"></div>
+            </li>
+            <li id="onedeck3" class="one-deck">
+              Onedeck
+              <div class="one-div"></div>
+            </li>
+            <li id="onedeck4" class="one-deck">
+              Onedeck
+              <div class="one-div"></div>
+            </li>
+          </ul>
+        </div>
+        <button id="rotate-button" data-direction="0">Rotate your ships</button>
+        <h3 id="placement-notation">Or u can set ships Randomly</h3>
+        <button id="random-ship-placement">Random placement of ships</button>
+        <button id="start-game" class="hidden">Start the game</button>
+      </div>
+      <div class="grid-container">
+        <h2>Your squadron</h2>
+        <div class="grid player"></div>
+      </div>
+      <div class="grid-container">
         <h2>Сomputer squadron</h2>
-        <div class="grid computer"></div>  
-     </div>
+        <div class="grid computer"></div>
+      </div>
     </div>
     <script src="main.js"></script>
-</body>
+  </body>
 </html>
