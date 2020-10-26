@@ -235,6 +235,7 @@ class Computer {
       Seabattle.gameOver === false &&
       result !== Seabattle.generalData.cellType.miss
     ) {
+      document.getElementById('game-info').textContent = 'Your Go'
       if (this.hasDamagedShip) {
         let randomDirection = null;
         let randomValue = null;
@@ -377,8 +378,7 @@ class Seabattle {
         if (
           Seabattle.placeShipType === ship.type &&
           ship.canBeInstalled(x, y, Seabattle.placeShipDirection)
-        )
-         {
+        ) {
           ship.create(x, y, Seabattle.placeShipDirection, true);
           Seabattle.placeShipCoords = ship.getAllShipCells();
 
@@ -427,6 +427,7 @@ class Seabattle {
         Seabattle.placeShipType = "";
         Seabattle.placeShipCoords = [];
         this.placingOnGrid = false;
+        document.getElementById('rotate-button').setAttribute("data-direction","0")
         if (this.areAllShipPlaced()) {
           document.getElementById("rotate-button").classList.add("hidden");
           document.getElementById("start-game").classList = "visible";
@@ -449,24 +450,24 @@ class Seabattle {
 
   toggleRotationHandler(event) {
     const direction = parseInt(event.target.getAttribute("data-direction"), 10);
-    const el = document.querySelector('.placing');
+    const el = document.querySelector(".placing");
 
     if (direction === Ship.verticalDirection) {
       event.target.setAttribute("data-direction", "1");
-      el.classList.toggle('placing--horizontal')
-      el.classList.remove('placing--vertical')
+      el.classList.toggle("placing--horizontal");
+      el.classList.remove("placing--vertical");
       Seabattle.placeShipDirection = Ship.horizontalDirection;
     } else if (direction === Ship.horizontalDirection) {
       event.target.setAttribute("data-direction", "0");
-      el.classList.toggle('placing--vertical')
-      el.classList.remove('placing--horizontal')
+      el.classList.toggle("placing--vertical");
+      el.classList.remove("placing--horizontal");
       Seabattle.placeShipDirection = Ship.verticalDirection;
     }
   }
   startGameHandler(event) {
     this.readyToPlay = true;
     document.getElementById("aviable-ships-menu").classList.add("hidden");
-    document.getElementById("game-info").textContent = 'The Game Started:'
+    document.getElementById("game-info").textContent = "The Game Started:Your GO";
   }
 
   shoot(x, y, targetPlayer) {
@@ -502,24 +503,25 @@ class Seabattle {
       return result;
     }
   }
+
   shootHandler(event) {
     const x = parseInt(event.target.getAttribute("data-x"), 10);
     const y = parseInt(event.target.getAttribute("data-y"), 10);
     let result = null;
-
     if (this.readyToPlay) {
       result = this.shoot(x, y, Seabattle.generalData.computer);
     }
     if (!Seabattle.gameOver && result === Seabattle.generalData.cellType.miss) {
       setTimeout(() => this.enemy.shoot(), 1000);
+      document.getElementById('game-info').textContent = 'Computer Go'
     }
   }
   checkForGameOver() {
     if (this.computerSquadron.areAllShipsSunk()) {
-      document.getElementById('game-info').textContent = 'You win';
+      document.getElementById("game-info").textContent = "You win";
       Seabattle.gameOver = true;
     } else if (this.playerSquadron.areAllShipsSunk()) {
-      document.getElementById('game-info').textContent = 'You loose';
+      document.getElementById("game-info").textContent = "You loose";
       Seabattle.gameOver = true;
     }
   }
@@ -531,13 +533,7 @@ class Seabattle {
     document.getElementById("placement-notation").classList.add("hidden");
     document.getElementById("start-game").classList = "visible";
     document.getElementById("menu-header").textContent = "Let`s start?";
-    document.getElementById('game-info').textContent = "Press the start button"
-  }
-
-  gameInfoStatus() {
-    this.gameOver !== true;
-    document.getElementById('game-info').textContent = "Сейчас стреляет"
-
+    document.getElementById("game-info").textContent = "Press the start button";
   }
 
   init() {
@@ -590,7 +586,7 @@ class Seabattle {
 
     document
       .getElementById("random-ship-placement")
-      .addEventListener("click", this.setRandomPlayerShips.bind(this), false); 
+      .addEventListener("click", this.setRandomPlayerShips.bind(this), false);
   }
 }
 
