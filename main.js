@@ -461,12 +461,12 @@ class Seabattle {
       el.classList.toggle('placing--vertical')
       el.classList.remove('placing--horizontal')
       Seabattle.placeShipDirection = Ship.verticalDirection;
-
     }
   }
   startGameHandler(event) {
     this.readyToPlay = true;
     document.getElementById("aviable-ships-menu").classList.add("hidden");
+    document.getElementById("game-info").textContent = 'The Game Started'
   }
 
   shoot(x, y, targetPlayer) {
@@ -531,6 +531,13 @@ class Seabattle {
     document.getElementById("placement-notation").classList.add("hidden");
     document.getElementById("start-game").classList = "visible";
     document.getElementById("menu-header").textContent = "Let`s start?";
+    document.getElementById('game-info').textContent = "Press the start button"
+  }
+
+  gameInfoStatus() {
+    this.gameOver !== true;
+    document.getElementById('game-info').textContent = "Сейчас стреляет"
+
   }
 
   init() {
