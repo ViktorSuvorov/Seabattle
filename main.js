@@ -235,6 +235,7 @@ class Computer {
       Seabattle.gameOver === false &&
       result !== Seabattle.generalData.cellType.miss
     ) {
+      document.getElementById('game-info').textContent = 'Your Go'
       if (this.hasDamagedShip) {
         let randomDirection = null;
         let randomValue = null;
@@ -512,6 +513,7 @@ class Seabattle {
     }
     if (!Seabattle.gameOver && result === Seabattle.generalData.cellType.miss) {
       setTimeout(() => this.enemy.shoot(), 1000);
+      document.getElementById('game-info').textContent = 'Computer Go'
     }
   }
   checkForGameOver() {
