@@ -467,7 +467,7 @@ class Seabattle {
   startGameHandler(event) {
     this.readyToPlay = true;
     document.getElementById("aviable-ships-menu").classList.add("hidden");
-    document.getElementById("game-info").textContent = "The Game Started:";
+    document.getElementById("game-info").textContent = "The Game Started:Your GO";
   }
 
   shoot(x, y, targetPlayer) {
